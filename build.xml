@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="CTRTEMPCREATION" default="all" basedir=".">
+
+	<property file="build.properties" />
+    <target name="all" depends="clean,build, dist,deploywar" />
+   
+    <!-- =========================================================== -->
+	<!-- copy all file to build application.                         -->
+	<!-- =========================================================== -->	
+	<target name="build">
+		<copy todir="${project.build.web}" verbose="yes" overwrite="yes">
+			<fileset dir="${project.webcontent}" includes="**/*" />
+		</copy>
+	</target>
+	<!-- =========================================================== -->
+	<!-- Create the WAR file containing the distribution.		     -->
+	<!-- =========================================================== -->
+	<target name="dist">
+		<mkdir dir="${project.dist}" />
+		<jar jarfile="${project.dist}/${project.dist.war}">
+			<fileset dir="${project.build.web}" />
+		</jar>
+	</target>
+    <!-- =========================================================== -->
+	<!-- Clean compilation output.                                   -->
+	<!-- =========================================================== -->
+	<target name="clean">
+		<delete includeemptydirs="true" failonerror="no" verbose="true">
+			<fileset dir="${project.dist}" />
+			<fileset dir="${project.build.web}" />
+		</delete>
+	</target>
+    <!-- =========================================================== -->
+    <!-- Deploy WAR                                                  -->
+    <!-- =========================================================== -->
+    <target name="deploywar" >
+			<copy todir="${deploy.dir}">
+				<fileset dir="${project.dist}" includes="${project.dist.war}"/>
+			</copy>
+    </target>
+	<!-- ============================================================ -->
+	<!-- Lunch  browser                                               -->
+	<!-- ============================================================ -->
+    <target name="lunch Browser">
+        <!--Launch the browser via the exec ANT task -->
+        <exec executable="${browser.path}" spawn="yes">
+	      <arg line="http://localhost:9090/app" />
+       </exec>
+    </target>
+</project>

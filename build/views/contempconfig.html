@@ -1,0 +1,80 @@
+
+<!-- row1 -->
+<div class="row">
+
+
+	<!-- formgroup1 -->
+
+	<div class="form-group">
+		<!-- Section-1-->
+		<div class="col-sm-3">
+			<select class="form-control" ng-change="selectRpAction()"
+				ng-model="selectedRp"
+				ng-options="rp as rp.rateplanDescrition for rp in rateplans">
+				<option value="">--choose value--</option>
+			</select>
+		</div>
+
+		<!-- Section 2 -->
+		<div class="col-sm-3">
+			<button class="btn btn-sm btn-primary btn-block"
+				ng-click="getRateplansAction()">
+				Get all rate plan</strong>
+			</button>
+		</div>
+
+		<!-- Section 3-->
+		<div class="col-sm-6"></div>
+
+
+	</div>
+
+	<!-- End formgroup1 -->
+
+</div>
+
+<!--End  row1 -->
+
+
+<!-- Second row -->
+<div class="row">
+	<div class="col-md-5">
+		<br /> <br />
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Short description</th>
+					<th>Description</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="sp in spackages" class="ng-scope">
+					<td class="ng-binding">{{sp.spShdes}}</td>
+					<td class="ng-binding">{{sp.spDescriptino}}</td>
+					<td class="action-column">
+						<button type="button" class="btn btn-info btn-sm"
+							ng-click="Edit(sp)">Edit</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-md-7"></div>
+	<div class="col-md-6"></div>
+</div>
+
+<div class="col-md-6">
+	<!--  <div class="panel panel-warning">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Panel 4</h3>
+                    <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+                </div>
+                <div class="panel-body">
+                    Panel content</div>
+            </div> -->
+</div>
+
+
+
