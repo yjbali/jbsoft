@@ -1,51 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" ?>
 
-<project name="CTRTEMPCREATION" default="all" basedir=".">
+<project name="SITOOLS" basedir=".">
 
-	<property file="build.properties" />
-    <target name="all" depends="clean,build, dist,deploywar" />
-   
-    <!-- =========================================================== -->
-	<!-- copy all file to build application.                         -->
-	<!-- =========================================================== -->	
-	<target name="build">
-		<copy todir="${project.build.web}" verbose="yes" overwrite="yes">
-			<fileset dir="${project.webcontent}" includes="**/*" />
-		</copy>
+	<property environment="env" />
+	<property name="project.dir" location="." />
+	<property name="project.src.java" location="src/main/java" />
+	<property name="project.web" location="src/main/webapp" /> 
+	<property name="project.dest" location="${project.dir}/classes" />
+	<property file="${project.dir}/build.properties" />
+	<property name="project.lib" location="${project.web}/WEB-INF/lib" />
+	<property name="axis.home" value="${project.lib}" />
+	<property name="axis.deploy" value="${project.web}/WEB-INF/deploy" />
+	<property name="dest.dir" value="${project.dir}" />
+	<property name="wsdl.dir" value="${dest.dir}/wsdl" />
+	<property name="bin.dir" value="${dest.dir}/classes" />
+	<property name="lib.dir" value="${dest.dir}/lib" />
+	<property name="wsdd.dir" value="${dest.dir}/deploy" />
+	<property name="tmp.resource" value="${src.dir}/resource" />
+	<property name="axis.lib" location="${project.dir}/axislibs" />
+	
+
+	<!-- =================================================================== -->
+	<!-- Build classpath                                                     -->
+	<!-- =================================================================== -->
+	<path id="classpath">
+		<fileset dir="${axis.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<!--===================================================================-->
+	<!--    Generate Axis deployement file  server-config.wsdd                                                             -->
+	<!--===================================================================-->
+	  <target name="generateWsddFile">
+
+		<java classpathref="classpath" classname="org.apache.axis.utils.Admin" fork="true">
+			<arg value="server" />
+			<arg value="${axis.deploy}/deployWS.wsdd" />
+		</java>
+	  	<copy file="server-config.wsdd" todir="${project.web}/WEB-INF" />
+	  	<delete file="server-config.wsdd"/>
 	</target>
-	<!-- =========================================================== -->
-	<!-- Create the WAR file containing the distribution.		     -->
-	<!-- =========================================================== -->
-	<target name="dist">
-		<mkdir dir="${project.dist}" />
-		<jar jarfile="${project.dist}/${project.dist.war}">
-			<fileset dir="${project.build.web}" />
-		</jar>
-	</target>
-    <!-- =========================================================== -->
-	<!-- Clean compilation output.                                   -->
-	<!-- =========================================================== -->
-	<target name="clean">
-		<delete includeemptydirs="true" failonerror="no" verbose="true">
-			<fileset dir="${project.dist}" />
-			<fileset dir="${project.build.web}" />
-		</delete>
-	</target>
-    <!-- =========================================================== -->
-    <!-- Deploy WAR                                                  -->
-    <!-- =========================================================== -->
-    <target name="deploywar" >
-			<copy todir="${deploy.dir}">
-				<fileset dir="${project.dist}" includes="${project.dist.war}"/>
-			</copy>
-    </target>
-	<!-- ============================================================ -->
-	<!-- Lunch  browser                                               -->
-	<!-- ============================================================ -->
-    <target name="lunch Browser">
-        <!--Launch the browser via the exec ANT task -->
-        <exec executable="${browser.path}" spawn="yes">
-	      <arg line="http://localhost:9090/app" />
-       </exec>
-    </target>
+	
+	
 </project>

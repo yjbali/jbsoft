@@ -1,4 +1,0 @@
-yjprojects
-==========
-
-all my  projects
